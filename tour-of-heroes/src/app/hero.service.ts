@@ -14,23 +14,26 @@ const httpOptions = {
 
 @Injectable()
 export class HeroService {
-
-  private heroesUrl = 'api/heroes';
+  
+  private heroesUrl = 'http://localhost:3000/heroes';
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
 
   getHeroes(): Observable<Hero[]> {
-    //this.messageService.add('HeroService: fetched heroes');
     return this.http.get<Hero[]>(this.heroesUrl)
     .pipe(
-      tap(heroes => this.log(`fetched heroes`)),
-      catchError(this.handleError('getHeroes', []))
+      map(heroes => {
+        console.log(heroes)
+        return heroes
+      })
+      //tap(heroes => this.log(`fetched heroes`)),
+      //catchError(this.handleError('getHeroes', []))
     );
   }
 
-  //
+  /* 
   getHeroNo404<Data>(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/?id=${id}`;
     return this.http.get<Hero[]>(url)
@@ -42,29 +45,64 @@ export class HeroService {
       }),
       catchError(this.handleError<Hero>(`getHero id=${id}`))
     );
-  }
+  } */
 
+  
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
-    //this.messageService.add(`HeroService: fetched hero id=${id}`);
     return this.http.get<Hero>(url).pipe(
-      tap(_ => this.log(`fetched hero id=${id}`)),
-      catchError(this.handleError<Hero>(`getHero id=${id}`))
+      map(hero => {
+        console.log(hero)
+        return hero
+      })
     );
   }
 
   updateHero(hero: Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
-      tap(_ => this.log(`updated hero id=${hero.id}`)),
-      catchError(this.handleError<any>('updateHero'))
+    const url = `${this.heroesUrl}/${hero.id}`;
+    return this.http.put(url, hero, httpOptions).pipe(
+      map(hero => {
+        console.log(hero)
+        return hero
+      })
+//      tap(_ => this.log(`updated hero id=${hero.id}`)),
+//      catchError(this.handleError<any>('updateHero'))
     );
   }
 
   addHero(hero: Hero): Observable<Hero> {
-    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero with id=${hero.id}`)),
-      catchError(this.handleError<Hero>('addHero'))
+    const url = `${this.heroesUrl}/${hero.name}`;
+    //var loop = 0
+    var MaxID: number
+    var NewID: number
+
+    this.http.get<Hero[]>(this.heroesUrl).pipe(
+      map(heroes => {
+        console.log(heroes)
+        // return heroes
+        for (var loop = 0; loop < heroes.length; loop++) {
+          MaxID = heroes[loop].id
+          console.log(`Current hero ${heroes[loop].name}, Loop number #${loop}, ID number #${MaxID}`)
+          NewID = MaxID+1
+        }
+      })
     );
+    // console.log(`New hero ${req.params.name} added as #${MaxID+1}`)
+    console.log(`New hero ${hero.name} added as #${NewID}`)
+
+    hero.id = NewID
+    //hero = (id, name}
+
+    return this.http.post<Hero>(url, hero, httpOptions).pipe(
+    
+      // map(hero => {
+      //   console.log(hero)
+      //   return hero
+      // })
+       tap((hero: Hero) => this.log(`added hero with id=${hero.id}`)),
+       catchError(this.handleError<Hero>('addHero'))
+    );
+    
   }
 
   deleteHero (hero: Hero | number): Observable<Hero> {
@@ -88,6 +126,7 @@ export class HeroService {
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
+    console.log(result)
     return (error: any): Observable<T> => {
       console.error(error);
       this.log(`${operation} failed: ${error.message}`);
