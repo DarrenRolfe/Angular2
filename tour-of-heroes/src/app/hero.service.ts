@@ -65,44 +65,16 @@ export class HeroService {
         console.log(hero)
         return hero
       })
-//      tap(_ => this.log(`updated hero id=${hero.id}`)),
-//      catchError(this.handleError<any>('updateHero'))
     );
   }
 
   addHero(hero: Hero): Observable<Hero> {
     const url = `${this.heroesUrl}/${hero.name}`;
-    //var loop = 0
-    var MaxID: number
-    var NewID: number
-
-    this.http.get<Hero[]>(this.heroesUrl).pipe(
-      map(heroes => {
-        console.log(heroes)
-        // return heroes
-        for (var loop = 0; loop < heroes.length; loop++) {
-          MaxID = heroes[loop].id
-          console.log(`Current hero ${heroes[loop].name}, Loop number #${loop}, ID number #${MaxID}`)
-          NewID = MaxID+1
-        }
-      })
-    );
-    // console.log(`New hero ${req.params.name} added as #${MaxID+1}`)
-    console.log(`New hero ${hero.name} added as #${NewID}`)
-
-    hero.id = NewID
-    //hero = (id, name}
 
     return this.http.post<Hero>(url, hero, httpOptions).pipe(
-    
-      // map(hero => {
-      //   console.log(hero)
-      //   return hero
-      // })
        tap((hero: Hero) => this.log(`added hero with id=${hero.id}`)),
        catchError(this.handleError<Hero>('addHero'))
     );
-    
   }
 
   deleteHero (hero: Hero | number): Observable<Hero> {

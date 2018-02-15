@@ -77,37 +77,35 @@ app.put('/heroes/:id', function (req, res) {
 // Create new hero
 app.post('/heroes/:name', function (req, res) {
     const name = req.params.name
-    const id = req.params.id
+    const newId = heroes[heroes.length - 1].id + 1
 
-    // console.log(`MaxID: ${MaxID}`)
-    // console.log(`Entry: ${heroes[MaxID]}`)
-    // console.log(req.body)
-    console.log(`New hero ${name} imported as #${id}`)
-    console.log(`New Hero Details: ${req.params.hero}`)
-
-    // id = MaxID+1
-    newhero = {id, name}
+    newhero = {id: newId, name}
     heroes.push(newhero)
-
-//    res.id = id
-    res.status(200).json({updated:true, errors: false})
-//    return res
+    res.status(200).json({updated:true, errors: false, id: newhero.id, name: newhero.name})
 })
 
 
-/* addHero(hero: Hero): Observable<Hero> {
-    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero with id=${hero.id}`)),
-      catchError(this.handleError<Hero>('addHero'))
-    );
-  }
- */
+// Delete hero
+app.delete('/heroes/:id', function (req, res) {
+    const id = req.params.id
+    const hero = heroes.findIndex(hero => hero.id == id)
+    
+    // console.log(` Hero index: ${heroes.indexOf(id)}`)
+    console.log(` ID index: ${id}`)
+    console.log(` hero ID: ${hero.id}, ${hero}`)
+    // heroes.splice(heroes[indexOf(id)])
+    heroes.splice(hero,1)
+    res.status(200).json({updated:true, errors: false})
+})
+
+
 
 
 // Listen port 3000 for requests
 app.listen(3000, function(){
     console.log("listening on port 3000")
 })
+
 function newFunction(res) {
     res.id = id;
 }
