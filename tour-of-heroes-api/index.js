@@ -15,13 +15,13 @@ const heroes = [
     { id: 15, name: 'Green Arrow' },  
     { id: 16, name: 'Firestorm' },  
     { id: 17, name: 'Atom' },  
-    { id: 18, name: 'The Hulk' },  
+    { id: 18, name: 'Iceman' },  
     { id: 19, name: 'Vibe' },  
     { id: 20, name: 'Gypsy' },  
   ];
 
 // Connection URL
-const url = 'mongodb://localhost:32768';
+const url = 'mongodb://localhost:32769';   // PORT FROM KITEMATIC
 
 // Database Name
 const dbName = 'tourofheroes';
@@ -51,21 +51,27 @@ return MongoClient.connect(url)
         app.get('/heroes', function (req, res) {
             req.db.collection('heroes').find({}).toArray()
             .then(result => {
-
-                res.status(200).json(results)
+                res.status(200).json(result)
             })
             .catch(err => {
                 res.status(500).send(err)
             })
-            
         })
     
         // Search for a hero
         app.get('/heroes/search', (req, res) => {
             const searchterm = req.query.term
-            const myhero = heroes
-                .filter(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase()))
-            res.status(200).json(myhero)
+            // const myhero = heroes
+            //     .filter(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase()))
+            // req.db.collection('heroes').find(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase())).toArray
+            req.db.collection('heroes').find({name: searchterm},{ _id: 0}).toArray
+            .then(result => {
+                res.status(200).json(result)
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+            // res.status(200).json(myhero)
         })
     
         // Return individual heroes
