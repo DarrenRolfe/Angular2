@@ -18,28 +18,22 @@ const heroes = [
       { id: 19, name: 'Vibe' },  
       { id: 20, name: 'Gypsy' },  
     ];
- 
-// app.get('/', function (req, res) {
-//   res.send('Hello World')
-// })
 
+// Test of web root
+app.get('/', function (req, res) {
+    res.send('Hello World')
+})
 
 // Return all heroes
 app.get('/heroes', function (req, res) {
-    console.log(`RETURN'TH ALL THE HEROES!`)
     res.status(200).json(heroes)
 })
 
 // Search for a hero
-app.get('/heroes/search', function (req, res) {
-    console.log(req.params)
-    console.log(req.queryparams)
+app.get('/heroes/search', (req, res) => {
     const searchterm = req.query.term
-    console.log(`Searching for ${searchterm}`)
-
     const myhero = heroes
         .filter(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase()))
-    if (myhero) {console.log(`The hero ${myhero} was found!`)}
     res.status(200).json(myhero)
 })
 
@@ -51,41 +45,24 @@ app.get('/heroes/:id', function (req, res) {
     if(!hero){
         res.status(404).send("no hero found")
     }
-
     res.status(200).json(hero)
 })
-
 
 // Update individual hero
 app.put('/heroes/:id', function (req, res) {
     const id = req.params.id
-    // const hero = req.params.name
     if(!req.body) {
         return res.status(400).send("no body sent")
     }
-    console.log(req.body)
-    console.log(req.params.id)
-    console.log(heroes
-        .map(hero => hero.id))
-
     const heroIndex = heroes
         .map(hero => hero.id.toString())
         .indexOf(id)
-
-    console.log(heroIndex)
-
     if(heroIndex === -1) {
-        console.log("INSIDE NOT FOUND ERROR")
         return res.status(400).send(`hero not found with id '${id}'`)
     }
-
     heroes[heroIndex] = req.body
-    //heroes[heroIndex].name = req.params.name
-    // const oldhero = heroes.find(hero => hero.id == id)
-
-    res.status(200).json({updated:true, errors: false})
+    res.status(200).json({updated: true, errors: false})
 })
-
 
 // Create new hero
 app.post('/heroes/:name', function (req, res) {
@@ -94,9 +71,8 @@ app.post('/heroes/:name', function (req, res) {
 
     newhero = {id: newId, name}
     heroes.push(newhero)
-    res.status(200).json({updated:true, errors: false, id: newhero.id, name: newhero.name})
+    res.status(200).json({updated: true, errors: false, id: newhero.id, name: newhero.name})
 })
-
 
 // Delete hero
 app.delete('/heroes/:id', function (req, res) {
@@ -104,19 +80,10 @@ app.delete('/heroes/:id', function (req, res) {
     const hero = heroes.findIndex(hero => hero.id == id)
     
     heroes.splice(hero,1)
-    res.status(200).json({updated:true, errors: false})
+    res.status(200).json({updated: true, errors: false})
 })
-
-
-
-
 
 // Listen port 3000 for requests
 app.listen(3000, function(){
     console.log("listening on port 3000")
 })
-
-function newFunction(res) {
-    res.id = id;
-}
-
