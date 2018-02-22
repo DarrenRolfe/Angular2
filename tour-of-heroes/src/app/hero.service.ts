@@ -25,11 +25,9 @@ export class HeroService {
     return this.http.get<Hero[]>(this.heroesUrl)
     .pipe(
       map(heroes => {
-        console.log(heroes)
+        console.log(`Returning getHeroes: ${heroes}`)
         return heroes
       })
-      //tap(heroes => this.log(`fetched heroes`)),
-      //catchError(this.handleError('getHeroes', []))
     );
   }
 
@@ -88,12 +86,18 @@ export class HeroService {
   }
 
   searchHeroes(term:string): Observable<Hero[]> {
+    var url = `${this.heroesUrl}/search?term=${term}`; //${term}`;
+    console.log(`searching heroes...`)
     if (!term.trim()) {
       return of([]);
     }
-    return this.http.get<Hero[]>(`api/heroes/?name=${term}`).pipe(
-      tap(_ => this.log(`found heroes matching "${term}"`)),
-      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    return this.http.get<Hero[]>(url).pipe(
+      map(myhero => {
+        console.log(`This is my hero: ${myhero}`)
+        return myhero
+      })
+      // tap(_ => this.log(`found heroes matching "${term}"`)),
+      // catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
 

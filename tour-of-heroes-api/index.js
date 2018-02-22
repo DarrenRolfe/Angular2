@@ -26,9 +26,22 @@ const heroes = [
 
 // Return all heroes
 app.get('/heroes', function (req, res) {
+    console.log(`RETURN'TH ALL THE HEROES!`)
     res.status(200).json(heroes)
 })
 
+// Search for a hero
+app.get('/heroes/search', function (req, res) {
+    console.log(req.params)
+    console.log(req.queryparams)
+    const searchterm = req.query.term
+    console.log(`Searching for ${searchterm}`)
+
+    const myhero = heroes
+        .filter(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase()))
+    if (myhero) {console.log(`The hero ${myhero} was found!`)}
+    res.status(200).json(myhero)
+})
 
 // Return individual heroes
 app.get('/heroes/:id', function (req, res) {
@@ -90,13 +103,10 @@ app.delete('/heroes/:id', function (req, res) {
     const id = req.params.id
     const hero = heroes.findIndex(hero => hero.id == id)
     
-    // console.log(` Hero index: ${heroes.indexOf(id)}`)
-    console.log(` ID index: ${id}`)
-    console.log(` hero ID: ${hero.id}, ${hero}`)
-    // heroes.splice(heroes[indexOf(id)])
     heroes.splice(hero,1)
     res.status(200).json({updated:true, errors: false})
 })
+
 
 
 
