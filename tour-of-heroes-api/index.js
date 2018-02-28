@@ -21,7 +21,7 @@ const heroes = [
   ];
 
 // Connection URL
-const url = 'mongodb://localhost:32769';   // PORT FROM KITEMATIC
+const url = 'mongodb://localhost:32768';   // PORT FROM KITEMATIC
 
 // Database Name
 const dbName = 'tourofheroes';
@@ -64,12 +64,15 @@ return MongoClient.connect(url)
             // const myhero = heroes
             //     .filter(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase()))
             // req.db.collection('heroes').find(hero => hero.name.toLowerCase().includes(searchterm.toLowerCase())).toArray
-            req.db.collection('heroes').find({name: searchterm},{ _id: 0}).toArray
-            .then(result => {
-                res.status(200).json(result)
-            })
-            .catch(err => {
-                res.status(500).send(err)
+            req.db.collection('heroes').find({name: /searchterm/},{ _id: 0}).toArray(function(err, result) {
+
+                if (result) {
+                    res.status(200).json(result)
+                }
+                if (err) {
+                    res.status(500).send(err)
+                }
+                
             })
             // res.status(200).json(myhero)
         })
