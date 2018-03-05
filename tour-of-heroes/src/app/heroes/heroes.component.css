@@ -71,3 +71,8 @@ button.delete {
   background-color: gray !important;
   color: white;
 }
+
+.list {
+  margin: 20px;
+  box-sizing: content-box;
+}

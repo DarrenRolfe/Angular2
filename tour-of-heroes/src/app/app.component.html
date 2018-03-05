@@ -2,20 +2,20 @@
 <div class="page-container" style="text-align:center">
   <mat-toolbar color="primary">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1>{{ title }}</h1>
+    <h1 class="example-app-name">{{ title }}</h1>
   </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #snav mode="side" fixedTopGap="56">
-    <mat-side-list>
+    <mat-nav-list>
         <a mat-list-item routerLink="/dashboard"><mat-icon>home</mat-icon>Dashboard</a>
         <a mat-list-item routerLink="/heroes"><mat-icon>list</mat-icon>Heroes</a>      
-    </mat-side-list>
+    </mat-nav-list>
   </mat-sidenav>
 
-  <mat-side-nav-content>
+  <mat-sidenav-content>
     <router-outlet></router-outlet>
-  </mat-side-nav-content>
+  </mat-sidenav-content>
 </mat-sidenav-container>
   <!-- <nav>
       <a routerLink="/dashboard">Dashboard</a>
