@@ -1,11 +1,25 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>{{ title }}</h1>
+<div class="page-container" style="text-align:center">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1>{{ title }}</h1>
+  </mat-toolbar>
 
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/heroes">Heroes</a>
-</nav>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #snav mode="side" fixedTopGap="56">
+    <mat-side-list>
+        <a mat-list-item routerLink="/dashboard"><mat-icon>home</mat-icon>Dashboard</a>
+        <a mat-list-item routerLink="/heroes"><mat-icon>list</mat-icon>Heroes</a>      
+    </mat-side-list>
+  </mat-sidenav>
 
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+  <mat-side-nav-content>
+    <router-outlet></router-outlet>
+  </mat-side-nav-content>
+</mat-sidenav-container>
+  <!-- <nav>
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/heroes">Heroes</a>
+    </nav> -->
+
+    <app-messages></app-messages>
