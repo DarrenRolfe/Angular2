@@ -1,0 +1,17 @@
+
+<h2>My Heroes</h2>
+<mat-list class="heroes list" role="list">
+  <mat-list-item *ngFor="let hero of heroes" role="listitem">
+    <a routerLink="/detail/{{hero.id}}">
+    <span class="badge">{{ hero.id }}</span> {{ hero.name }}
+    </a>
+    <button class="delete" title="delete hero" (click)="delete(hero)">x</button>
+  </mat-list-item>
+</mat-list>
+
+<div>
+  <label>Hero name:
+    <input #heroName />
+  </label>
+  <button (click)="add(heroName.value); heroName.value=''">add</button>
+</div>
