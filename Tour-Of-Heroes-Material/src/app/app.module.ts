@@ -25,11 +25,12 @@ import { MessageService } from './message.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 
-const appRoutes: Routes = [
+const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  // { path: '', redirectTo: '/heroes', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'heroes', component: HeroesComponent },
-  { path: 'detail/:id', component: HeroDetailComponent }
+  // { path: 'heroes', component: HeroesComponent },
+  // { path: 'detail/:id', component: HeroDetailComponent }
 ];
 
 @NgModule({
@@ -47,7 +48,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(routes)
   ],
   exports: [
     MatToolbarModule,
